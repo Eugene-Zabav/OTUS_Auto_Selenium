@@ -12,7 +12,7 @@ def pytest_addoption(parser):
     parser.addoption("--browser", default="chrome")
     parser.addoption("--max", action="store_true")
     parser.addoption("--headless", action="store_true")
-    parser.addoption("--url", help="Base application URL")
+    parser.addoption("--url", default="http://192.168.100.4:8081/", help="Base application URL")
 
 
 @pytest.fixture(scope="session")
@@ -52,5 +52,5 @@ def browser(request):
         driver.maximize_window()
 
     yield driver
-    time.sleep(3)
+
     driver.close()
