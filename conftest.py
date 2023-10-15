@@ -1,4 +1,3 @@
-import time
 import pytest
 import os.path
 from selenium import webdriver
@@ -53,4 +52,4 @@ def browser(request):
 
     yield driver
 
-    driver.close()
+    driver.quit()
