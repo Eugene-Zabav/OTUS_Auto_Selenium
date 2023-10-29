@@ -1,12 +1,18 @@
 from selenium.webdriver.common.by import By
+from pages.elements.header_elemen import HeaderElements
+from pages.base_page import BasePage
 
 
-class CatalogPage:
-    BREADCRUMB = (By.XPATH, "//*[@class='breadcrumb']")
-    PRODUCTS_GROUP = (By.XPATH, "//*[@class='list-group']")
-    CATEGORY_DESCRIPTION = (By.XPATH, "(//*[contains(@class, 'row')])[3]")
-    POSITIONS_SORTING_DROPDOWN = (By.XPATH, "//*[@id='input-sort']")
-    POSITIONS_SHOW_LIMIT_DROPDOWN = (By.XPATH, "//*[@id='input-limit']")
-    CURRENCY_DROP_DOWN = (By.XPATH, "//*[@class='btn btn-link dropdown-toggle']")
-    CURRENCY_EUR = (By.XPATH, "//*[@name='EUR']")
+class CatalogPage(BasePage):
+    PATH = "/desktops"
     ITEM_PRICE = (By.XPATH, "//p[@class='price']")
+
+    def open(self, url):
+        self.browser.get(url + self.PATH)
+
+    def change_currency(self):
+        HeaderElements(self.browser).change_currency_to_eur()
+        return self
+
+    def currency_price(self):
+        return self.element(self.ITEM_PRICE)
