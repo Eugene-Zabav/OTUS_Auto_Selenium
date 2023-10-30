@@ -17,3 +17,6 @@ class NewUserData:
     def random_password(self):
         self.password = "".join([random.choice(string.ascii_letters) for _ in range(5)])
         return self.password
+
+    def password_confirm(self):
+        return self.password

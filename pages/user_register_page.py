@@ -17,14 +17,20 @@ class UserRegisterPage(BasePage):
         self.browser.get(url + self.PATH)
         return self
 
-    def register_new_user(self, first_name, last_name, email, phone, password, confirm_password):
+    def fill_register_new_user_form(self, first_name, last_name, email, phone, password, confirm_password):
         self._input(self.element(self.FIRST_NAME_TEXT_INPUT), first_name)
         self._input(self.element(self.LAST_NAME_TEXT_INPUT), last_name)
         self._input(self.element(self.EMAIL_TEXT_INPUT), email)
         self._input(self.element(self.PHONE_TEXT_INPUT), phone)
         self._input(self.element(self.PASSWORD_TEXT_INPUT), password)
         self._input(self.element(self.PASSWORD_CONFIRM_TEXT_INPUT), confirm_password)
+        return self
+
+    def click_policy_confirm_checkbox(self):
         self.click(self.element(self.POLICY_AGREE_CHECKBOX))
+        return self
+
+    def click_confirm_registry_button(self):
         self.click(self.element(self.CONTINUE_SUBMIT_BUTTON))
         return self
 

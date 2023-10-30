@@ -2,16 +2,18 @@ from pages.user_register_page import UserRegisterPage
 from test_data.opencart_user import NewUserData
 
 
-def test_user_register_page_elements(browser, url):
+def test_create_new_user(browser, url):
     userdata = NewUserData()
     UserRegisterPage(browser) \
         .open(url) \
-        .register_new_user(
+        .fill_register_new_user_form(
             userdata.random_string(),
             userdata.random_string(),
             userdata.random_email(),
             userdata.random_phone(),
             userdata.random_password(),
-            userdata.password,
+            userdata.password_confirm(),
         ) \
+        .click_policy_confirm_checkbox() \
+        .click_confirm_registry_button() \
         .title_is_success()
