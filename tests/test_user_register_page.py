@@ -1,13 +1,19 @@
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from pages import UserRegisterPage
+from pages.user_register_page import UserRegisterPage
+from test_data.opencart_user import RandomUserData
 
 
-def test_user_register_page_elements(browser, url):
-    browser.get(url + "/index.php?route=account/register")
-
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(UserRegisterPage.LOGIN_PAGE_LINK))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(UserRegisterPage.FIRST_NAME_TEXT_INPUT))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(UserRegisterPage.USER_NAVIGATION_AREA))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(UserRegisterPage.PRIVACY_POLICY_LINK))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(UserRegisterPage.CONTINUE_SUBMIT_BUTTON))
+def test_create_new_user(browser, url):
+    userdata = RandomUserData()
+    UserRegisterPage(browser) \
+        .open(url) \
+        .fill_register_new_user_form(
+            userdata.random_string(),
+            userdata.random_string(),
+            userdata.random_email(),
+            userdata.random_phone(),
+            userdata.random_password(),
+            userdata.password_confirm(),
+        ) \
+        .click_policy_confirm_checkbox() \
+        .click_confirm_registry_button() \
+        .title_is_success()

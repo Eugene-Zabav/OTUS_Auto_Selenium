@@ -1,40 +1,28 @@
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from pages import MainPage
-
-
-def test_main_page_elements(browser, url):
-    browser.get(url)
-
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.SHOPPING_CART_LINK))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.SEARCH_TEXT_INPUT))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.PRODUCT_IMAGE_SLIDER))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.PRODUCTS_CARDS))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.BRANDS_SLIDER))
+from pages.main_page import MainPage
 
 
 def test_change_currency(browser, url):
-    browser.get(url)
-
-    default_usd_currency = WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.ITEM_PRICE))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.CURRENCY_DROP_DOWN)).click()
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.CURRENCY_EUR)).click()
-    changed_eur_currency = WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.ITEM_PRICE))
-
+    MainPage(browser).open(url)
+    default_usd_currency = MainPage(browser).currency_price().text
+    MainPage(browser).change_currency()
+    changed_eur_currency = MainPage(browser).currency_price().text
     assert default_usd_currency != changed_eur_currency
 
 
 def test_add_item_to_cart(browser, url):
-    browser.get(url)
+    # browser.get(url)
+    MainPage(browser) \
+        .open(url) \
+        .add_to_cart()
 
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.ADD_TO_CART_BUTTON)).click()
-    cart_button = WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.CART))
+    assert MainPage(browser).element(MainPage.CART).text.startswith("1 item(s) - ")
 
-    assert cart_button.text.startswith("1 item(s) - ")
+    featured_item_name = MainPage(browser).featured_item_name()
 
-    cart_button.click()
-    items_in_cart = WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.ITEMS_IN_CART))
-    item_name = WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPage.ITEM_NAME_IN_CART))
+    MainPage(browser).click_cart_button()
 
-    assert item_name.text == "MacBook"
+    item_in_cart_name = MainPage(browser).item_in_cart_name()
+    items_in_cart = MainPage(browser).item_in_cart()
+
+    assert featured_item_name.text == item_in_cart_name.text
     assert items_in_cart.text == "x 1"
