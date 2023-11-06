@@ -17,7 +17,7 @@ class AdminPage(BasePage):
     MODEL_INPUT = (By.XPATH, "//input[@id='input-model']")
     SAVE_NEW_PRODUCT_BUTTON = (By.XPATH, "//*[@data-original-title='Save']")
     DELETE_SELECTED_PRODUCT_BUTTON = (By.XPATH, "//*[@data-original-title='Delete']")
-    SUCCESS_ALERT = (By.XPATH, "//*[@id='content']/div[2]/div[1]")
+    SUCCESS_ALERT = (By.XPATH, "//*[contains(@class, 'alert-success alert-dismissible')]")
     TEST_PRODUCT_CHECKBOX = (By.XPATH, "//*[contains(text(), 'TestProduct')]/preceding-sibling::td/input[@type='checkbox']")
 
 

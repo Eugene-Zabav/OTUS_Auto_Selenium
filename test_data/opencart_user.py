@@ -2,7 +2,7 @@ import random
 import string
 
 
-class NewUserData:
+class RandomUserData:
     password = ""
 
     def random_string(self, lenght=10):

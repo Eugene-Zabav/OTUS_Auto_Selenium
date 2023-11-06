@@ -1,9 +1,9 @@
 from pages.user_register_page import UserRegisterPage
-from test_data.opencart_user import NewUserData
+from test_data.opencart_user import RandomUserData
 
 
 def test_create_new_user(browser, url):
-    userdata = NewUserData()
+    userdata = RandomUserData()
     UserRegisterPage(browser) \
         .open(url) \
         .fill_register_new_user_form(
