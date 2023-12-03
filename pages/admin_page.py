@@ -22,28 +22,34 @@ class AdminPage(BasePage):
 
 
     def open(self, url):
+        self.logger.info(f"open '{url + self.PATH}' url")
         self.browser.get(url + self.PATH)
         return self
 
     def title_is_dashboard(self):
+        self.logger.info("Title is 'Dashboard'")
         self.title("Dashboard")
         return self
 
     def title_is_administration(self):
+        self.logger.info("Title is 'Administration'")
         self.title("Administration")
         return self
 
     def login(self, login, password):
+        self.logger.info(f"logining by Login={login} Password={password}")
         self._input(self.element(self.LOGIN_INPUT), login)
         self._input(self.element(self.PASSWORD_INPUT), password)
         self.click(self.element(self.LOGIN_BUTTON))
         return self
 
     def logout(self):
+        self.logger.info(f"Click LOGOUT button")
         self.click(self.element(self.LOGOUT_BUTTON))
         return self
 
     def create_default_product(self):
+        self.logger.info(f"Creating default product")
         self.click(self.element(self.CATALOG_LEFT_TAB))
         self.click(self.element(self.PRODUCTS_LEFT_TAB))
         self.click(self.element(self.ADD_NEW_PRODUCT_BUTTON))
@@ -55,6 +61,7 @@ class AdminPage(BasePage):
         return self
 
     def delete_default_product(self):
+        self.logger.info(f"Deleting default product")
         self.click(self.element(self.CATALOG_LEFT_TAB))
         self.click(self.element(self.PRODUCTS_LEFT_TAB))
         self.click(self.element(self.TEST_PRODUCT_CHECKBOX))
@@ -63,5 +70,6 @@ class AdminPage(BasePage):
 
 
     def show_success_alert(self):
+        self.logger.info(f"Show success alert")
         self.alert(self.SUCCESS_ALERT, "Success: You have modified products!\n×")
         return self
