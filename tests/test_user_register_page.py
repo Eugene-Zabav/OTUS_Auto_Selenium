@@ -1,7 +1,10 @@
+import allure
+
 from pages.user_register_page import UserRegisterPage
 from test_data.opencart_user import RandomUserData
 
 
+@allure.title("Login to admin page")
 def test_create_new_user(browser, url):
     userdata = RandomUserData()
     UserRegisterPage(browser) \

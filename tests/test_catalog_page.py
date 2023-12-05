@@ -1,6 +1,9 @@
+import allure
+
 from pages.catalog_page import CatalogPage
 
 
+@allure.title("Change currency in catalog page")
 def test_change_currency(browser, url):
     CatalogPage(browser).open(url)
     default_usd_currency = CatalogPage(browser).currency_price().text

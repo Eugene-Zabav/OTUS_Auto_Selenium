@@ -3,6 +3,8 @@ import os.path
 import logging
 import datetime
 
+import allure
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.firefox.options import Options as FFOptions
@@ -14,8 +16,8 @@ def pytest_addoption(parser):
     parser.addoption("--browser", default="chrome")
     parser.addoption("--max", action="store_true")
     parser.addoption("--headless", action="store_true")
-    parser.addoption("--log_level", action="store_true", default="DEBUG")
-    parser.addoption("--url", default="http://192.168.100.4:8081/", help="Base application URL")
+    parser.addoption("--log_level", action="store_true", default="INFO")
+    parser.addoption("--url", default="http://192.168.100.4:8081", help="Base application URL")
 
 
 @pytest.fixture(scope="session")
@@ -78,3 +80,21 @@ def browser(request):
     yield driver
 
     driver.quit()
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item):
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, 'rep_' + rep.when, rep)
+
+
+@pytest.fixture(autouse=True)
+def screenshot_by_test_failure(browser, request):
+    yield
+    if request.node.rep_call.failed:
+        allure.attach(
+            browser.get_screenshot_as_png(),
+            name='screenshot',
+            attachment_type=allure.attachment_type.PNG
+        )

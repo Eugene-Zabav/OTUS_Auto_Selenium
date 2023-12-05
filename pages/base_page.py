@@ -1,11 +1,8 @@
-import logging
-
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.alert import Alert
-
 
 class BasePage:
     def __init__(self, browser):
