@@ -1,3 +1,5 @@
+import allure
+
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
@@ -14,10 +16,12 @@ class UserRegisterPage(BasePage):
     CONTINUE_SUBMIT_BUTTON = (By.XPATH, "//input[@type='submit']")
 
     def open(self, url):
-        self.logger.info(f"open '{url + self.PATH}' url")
-        self.browser.get(url + self.PATH)
-        return self
+        with allure.step(f"Open '{url + self.PATH}' url"):
+            self.logger.info(f"Open '{url + self.PATH}' url")
+            self.browser.get(url + self.PATH)
+            return self
 
+    @allure.step("Fill register new user form")
     def fill_register_new_user_form(self, first_name, last_name, email, phone, password, confirm_password):
         self.logger.info(f"Fill register new user form by: "
                          f"first_name={first_name}, "
@@ -34,16 +38,20 @@ class UserRegisterPage(BasePage):
         self._input(self.element(self.PASSWORD_CONFIRM_TEXT_INPUT), confirm_password)
         return self
 
+    @allure.step("Click 'Policy agree' checkbox")
     def click_policy_confirm_checkbox(self):
         self.logger.info("Click 'Policy agree' checkbox")
         self.click(self.element(self.POLICY_AGREE_CHECKBOX))
         return self
 
+    @allure.step("Click 'Confirm register' button")
     def click_confirm_registry_button(self):
         self.logger.info("Click 'Confirm register' button")
         self.click(self.element(self.CONTINUE_SUBMIT_BUTTON))
         return self
 
+
+    @allure.step("Check success title")
     def title_is_success(self):
         self.logger.info("Check success title")
         self.title("Your Account Has Been Created!")

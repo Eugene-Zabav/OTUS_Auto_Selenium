@@ -1,3 +1,5 @@
+import allure
+
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
@@ -22,20 +24,24 @@ class AdminPage(BasePage):
 
 
     def open(self, url):
-        self.logger.info(f"open '{url + self.PATH}' url")
-        self.browser.get(url + self.PATH)
-        return self
+        with allure.step(f"Open '{url + self.PATH}' url"):
+            self.logger.info(f"Open '{url + self.PATH}' url")
+            self.browser.get(url + self.PATH)
+            return self
 
+    @allure.step("Title is 'Dashboard'")
     def title_is_dashboard(self):
         self.logger.info("Title is 'Dashboard'")
         self.title("Dashboard")
         return self
 
+    @allure.step("Title is 'Administration'")
     def title_is_administration(self):
         self.logger.info("Title is 'Administration'")
         self.title("Administration")
         return self
 
+    @allure.step("login")
     def login(self, login, password):
         self.logger.info(f"logining by Login={login} Password={password}")
         self._input(self.element(self.LOGIN_INPUT), login)
@@ -43,13 +49,15 @@ class AdminPage(BasePage):
         self.click(self.element(self.LOGIN_BUTTON))
         return self
 
+    @allure.step("logout")
     def logout(self):
         self.logger.info(f"Click LOGOUT button")
         self.click(self.element(self.LOGOUT_BUTTON))
         return self
 
+    @allure.step("Creating default product")
     def create_default_product(self):
-        self.logger.info(f"Creating default product")
+        self.logger.info("Creating default product")
         self.click(self.element(self.CATALOG_LEFT_TAB))
         self.click(self.element(self.PRODUCTS_LEFT_TAB))
         self.click(self.element(self.ADD_NEW_PRODUCT_BUTTON))
@@ -60,16 +68,17 @@ class AdminPage(BasePage):
         self.click(self.element(self.SAVE_NEW_PRODUCT_BUTTON))
         return self
 
+    @allure.step("Deleting default product")
     def delete_default_product(self):
-        self.logger.info(f"Deleting default product")
+        self.logger.info("Deleting default product")
         self.click(self.element(self.CATALOG_LEFT_TAB))
         self.click(self.element(self.PRODUCTS_LEFT_TAB))
         self.click(self.element(self.TEST_PRODUCT_CHECKBOX))
         self.click(self.element(self.DELETE_SELECTED_PRODUCT_BUTTON))
         return self
 
-
+    @allure.step("Show success alert")
     def show_success_alert(self):
-        self.logger.info(f"Show success alert")
+        self.logger.info("Show success alert")
         self.alert(self.SUCCESS_ALERT, "Success: You have modified products!\n×")
         return self

@@ -1,6 +1,9 @@
+import allure
+
 from pages.main_page import MainPage
 
 
+@allure.title("Change currency in main page")
 def test_change_currency(browser, url):
     MainPage(browser).open(url)
     default_usd_currency = MainPage(browser).currency_price().text
@@ -9,6 +12,7 @@ def test_change_currency(browser, url):
     assert default_usd_currency != changed_eur_currency
 
 
+@allure.title("Add item to cart")
 def test_add_item_to_cart(browser, url):
     # browser.get(url)
     MainPage(browser) \
