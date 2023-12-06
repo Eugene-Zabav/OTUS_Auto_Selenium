@@ -24,6 +24,14 @@ def pytest_addoption(parser):
 def url(request):
     return request.config.getoption("--url")
 
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+    if rep.outcome != "passed":
+        item.status = "failed"
+    else:
+        item.status = "passed"
 
 @pytest.fixture()
 def browser(request):
@@ -69,32 +77,19 @@ def browser(request):
     driver.logger = logger
     driver.test_name = request.node.name
 
-    logger.info("Browser %s started" % browser)
+    logger.info("Browser %s started" % browser_name)
 
     def fin():
+        if request.node.status == "failed":
+            allure.attach(
+                driver.get_screenshot_as_png(),
+                name='failure_screenshot',
+                attachment_type=allure.attachment_type.PNG
+            )
+
         driver.quit()
         logger.info("===> Test %s finished at %s" % (request.node.name, datetime.datetime.now()))
 
     request.addfinalizer(fin)
 
     yield driver
-
-    driver.quit()
-
-
-@pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item):
-    outcome = yield
-    rep = outcome.get_result()
-    setattr(item, 'rep_' + rep.when, rep)
-
-
-@pytest.fixture(autouse=True)
-def screenshot_by_test_failure(browser, request):
-    yield
-    if request.node.rep_call.failed:
-        allure.attach(
-            browser.get_screenshot_as_png(),
-            name='screenshot',
-            attachment_type=allure.attachment_type.PNG
-        )
