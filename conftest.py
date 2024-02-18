@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 def pytest_addoption(parser):
     parser.addoption("--browser", default="chrome")
-    parser.addoption("--executor", action="store_true", default="192.168.100.4")
+    parser.addoption("--executor", action="store_true", default="192.168.100.2")
     parser.addoption("--remote", action="store_true")
     parser.addoption("--max", action="store_true")
     parser.addoption("--headless", action="store_true")
