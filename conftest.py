@@ -15,7 +15,7 @@ def pytest_addoption(parser):
     parser.addoption("--max", action="store_true")
     parser.addoption("--headless", action="store_true")
     parser.addoption("--log_level", action="store_true", default="INFO")
-    parser.addoption("--url", default="http://192.168.100.4:8081", help="Base application URL")
+    parser.addoption("--url", default="http://192.168.100.2:8081", help="Base application URL")
 
 
 @pytest.fixture(scope="session")
